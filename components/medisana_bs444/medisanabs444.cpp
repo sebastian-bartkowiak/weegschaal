@@ -100,7 +100,7 @@ namespace esphome
 
       case ESP_GATTC_DISCONNECT_EVT:
       {
-        ESP_LOGD(TAG, "ESP_GATTC_DISCONNECT_EVT!");
+        ESP_LOGD(TAG, "ESP_GATTC_DISCONNECT_EVT! eager pushing data");
         this->node_state = esp32_ble_tracker::ClientState::IDLE;
         if (mPerson.valid)
         {
