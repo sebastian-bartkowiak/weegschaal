@@ -122,28 +122,36 @@ namespace esphome
             if (this->high_activity_sensor_[index])
               this->high_activity_sensor_[index]->publish_state(mPerson.highActivity);
 #endif
-            if (mWeight.valid && (mWeight.person == mPerson.person))
-            {
-              ESP_LOGI(TAG, "Weight %s:", mWeight.toString(mPerson).c_str());
-              if (this->weight_sensor_[index])
-                this->weight_sensor_[index]->publish_state(mWeight.weight);
-              if (this->bmi_sensor_[index] && mPerson.size)
-                this->bmi_sensor_[index]->publish_state(mWeight.weight / (mPerson.size * mPerson.size));
-            }
-            if (mBody.valid && (mBody.person == mPerson.person))
-            {
-              ESP_LOGI(TAG, "Body %s:", mBody.toString().c_str());
-              if (this->kcal_sensor_[index])
-                this->kcal_sensor_[index]->publish_state(mBody.kcal);
-              if (this->fat_sensor_[index])
-                this->fat_sensor_[index]->publish_state(mBody.fat);
-              if (this->tbw_sensor_[index])
-                this->tbw_sensor_[index]->publish_state(mBody.tbw);
-              if (this->muscle_sensor_[index])
-                this->muscle_sensor_[index]->publish_state(mBody.muscle);
-              if (this->bone_sensor_[index])
-                this->bone_sensor_[index]->publish_state(mBody.bone);
-            }
+          }
+        }
+        if (mWeight.valid)
+        {
+          ESP_LOGI(TAG, "Weight %s:", mWeight.toString(mPerson).c_str());
+          if ((mWeight.person >= 1) && (mWeight.person <= 8))
+          {
+            uint8_t index = mWeight.person - 1;
+            if (this->weight_sensor_[index])
+              this->weight_sensor_[index]->publish_state(mWeight.weight);
+            if (this->bmi_sensor_[index] && mPerson.size)
+              this->bmi_sensor_[index]->publish_state(mWeight.weight / (mPerson.size * mPerson.size));
+          }
+        }
+        if (mBody.valid)
+        {
+          ESP_LOGI(TAG, "Body %s:", mBody.toString().c_str());
+          if ((mBody.person >= 1) && (mBody.person <= 8))
+          {
+            uint8_t index = mBody.person - 1;
+            if (this->kcal_sensor_[index])
+              this->kcal_sensor_[index]->publish_state(mBody.kcal);
+            if (this->fat_sensor_[index])
+              this->fat_sensor_[index]->publish_state(mBody.fat);
+            if (this->tbw_sensor_[index])
+              this->tbw_sensor_[index]->publish_state(mBody.tbw);
+            if (this->muscle_sensor_[index])
+              this->muscle_sensor_[index]->publish_state(mBody.muscle);
+            if (this->bone_sensor_[index])
+              this->bone_sensor_[index]->publish_state(mBody.bone);
           }
         }
 
